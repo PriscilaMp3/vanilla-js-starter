@@ -1,5 +1,5 @@
+import { post, delete} from "./api.js";
 
-// Inserte el código aquí
 let input = document.getElementById("tareaaña");
 let ol = document.querySelector(".listat");
 let vacio = document.querySelector(".fondot");
@@ -35,44 +35,46 @@ if (listaElementos2 && listaElementos2.length) {
 } else {
   console.log("La lista está vacía.");
 }
-let ListaAgregar=(e) => {
-    e.preventDefault();
-    let text2 = input.value.toLowerCase();
-    let text3 = text2.charAt(0).toUpperCase() + text2.slice(1);
-    let repite = false;
-  
-    let elementos = document.querySelectorAll("li"); //nos devuelve una lista de elemento que cumplen con la condiccion, todos los elementos que sean li.
-    for (let i = 0; i < elementos.length; i++) {
-      let tarea = elementos[i].querySelector("p");
-  
-      if (tarea.textContent === text3) {
-        repite = true;
-        break;
-      }
-    }
-    if (repite) {
-      alert("Ingrese un tarea no repetida");
-    } else {
-      if (text2 !== "") {
-        const li = document.createElement("li");
-        const p = document.createElement("p");
-        let text3 = text2.charAt(0).toUpperCase() + text2.slice(1);
-        p.textContent = text3;
-        p.className = "nombre";
-        li.appendChild(p);
-        li.appendChild(borrar());
-        li.appendChild(Check());
-        li.className = "registro-linea";
-        li.id = "state";
-        ol.appendChild(li);
-  
-        input.value = "";
-        vacio.style.display = "none";
-      } else {
-        alert("Ingrese un texto");
-      }
+let ListaAgregar = (e) => {
+  e.preventDefault();
+  let text2 = input.value.toLowerCase();
+
+  post({task:text2}); //objeto//
+
+  let text3 = text2.charAt(0).toUpperCase() + text2.slice(1);
+  let repite = false;
+  let elementos = document.querySelectorAll("li"); //nos devuelve una lista de elemento que cumplen con la condiccion, todos los elementos que sean li.
+  for (let i = 0; i < elementos.length; i++) {
+    let tarea = elementos[i].querySelector("p");
+
+    if (tarea.textContent === text3) {
+      repite = true;
+      break;
     }
   }
+  if (repite) {
+    alert("Ingrese un tarea no repetida");
+  } else {
+    if (text2 !== "") {
+      const li = document.createElement("li");
+      const p = document.createElement("p");
+      let text3 = text2.charAt(0).toUpperCase() + text2.slice(1);
+      p.textContent = text3;
+      p.className = "nombre";
+      li.appendChild(p);
+      li.appendChild(borrar());
+      li.appendChild(Check());
+      li.className = "registro-linea";
+      li.id = "state";
+      ol.appendChild(li);
+
+      input.value = "";
+      vacio.style.display = "none";
+    } else {
+      alert("Ingrese un texto");
+    }
+  }
+};
 
 function borrar() {
   let borrartext = document.createElement("button");
@@ -85,9 +87,11 @@ function borrar() {
     //cuando se usa taregt el padre en este caso era el boton, porque el evento venia del icono,
     //y a veces el padre era el li porque el evento venia del boton.
     //con current target el vento siempre venia del boton.
-
     let item = e.currentTarget.parentElement;
     let diff = item.id;
+    
+    delete({item}); //nuevo objeto//
+
     item.remove();
     if (diff == "check") {
       contador.textContent--;

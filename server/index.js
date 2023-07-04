@@ -16,17 +16,18 @@ var taskRouter = express.Router();
 var tasks = [];
 
 taskRouter
-  .route("/")
-  .get(function (req, res) {
-    return res.json(tasks);
-  })
-  .post(function (req, res) {
-    tasks.push({
-      ...req.body,
-      id: uuid(),
-    });
-    return res.json(tasks);
-  });
+.route("/")
+.get(function (req, res) {
+  return res.json(tasks);
+})
+.post(function (req, res) {
+  const newTask = {
+    ...req.body,
+    id: uuid(),
+  };
+  tasks.push(newTask);
+  return res.json(newTask);
+});
 taskRouter.route("/:task_id")
   .get(function (req, res) {
     const id = req.params.task_id

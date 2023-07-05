@@ -1,46 +1,53 @@
-import { post, delete} from "./api.js";
+import { post, borrarTarea, getById, get } from "./api.js";
 
 let input = document.getElementById("tareaaña");
 let ol = document.querySelector(".listat");
 let vacio = document.querySelector(".fondot");
 let contador = document.getElementById("contador");
 let listaElementos = [];
-
 let datosGuardados = localStorage.getItem("datosGuardados");
 let datos = JSON.parse(datosGuardados);
 
 let listaGuardada = localStorage.getItem("listaGuardada");
 let listaElementos2 = JSON.parse(listaGuardada);
-if (listaElementos2 && listaElementos2.length > 0) {
-  listaElementos2.forEach(function (elemento) {
-    let list = document.createElement("li");
-    const p = document.createElement("p");
-    p.textContent = elemento.parrafo;
-    p.className = "nombre";
-    list.appendChild(p);
-    list.appendChild(borrar());
-    list.appendChild(Check());
-    list.className = "registro-linea";
-    list.id = "check";
-    list.style = "background-color: rgb(136, 145, 201);";
-    ol.appendChild(list);
-  });
-} else {
-  console.log("La lista está vacía.");
-  listaElementos2 = [];
-}
+
+var task = {
+  task: "",
+  checked: false,
+};
+
+// if (listaElementos2 && listaElementos2.length > 0) {
+//   listaElementos2.forEach(function (elemento) {
+//     let list = document.createElement("li");
+//     const p = document.createElement("p");
+//     p.textContent = elemento.parrafo;
+//     p.className = "nombre";
+//     list.appendChild(p);
+//     list.appendChild(borrar());
+//     list.appendChild(Check());
+//     list.className = "registro-linea";
+//     list.id = "check";
+//     list.style = "background-color: rgb(136, 145, 201);";
+//     ol.appendChild(list);
+//   });
+// } else {
+//   console.log("La lista está vacía.");
+//   listaElementos2 = [];
+// }
 
 if (listaElementos2 && listaElementos2.length) {
   contador.textContent = datos.contador;
 } else {
   console.log("La lista está vacía.");
 }
-let ListaAgregar = (e) => {
+let ListaAgregar = async (e) => {
   e.preventDefault();
   let text2 = input.value.toLowerCase();
+  let respuesta = await post(task); //objeto//
+  let taskId = await get(respuesta);
+  console.log(respuesta);
 
-  post({task:text2}); //objeto//
-
+  //post guardar el resultado en respuesta, await hasta que termine de hacer el post.
   let text3 = text2.charAt(0).toUpperCase() + text2.slice(1);
   let repite = false;
   let elementos = document.querySelectorAll("li"); //nos devuelve una lista de elemento que cumplen con la condiccion, todos los elementos que sean li.
@@ -57,15 +64,21 @@ let ListaAgregar = (e) => {
   } else {
     if (text2 !== "") {
       const li = document.createElement("li");
+
+      li.id = respuesta.id; //nuevo//
+
       const p = document.createElement("p");
       let text3 = text2.charAt(0).toUpperCase() + text2.slice(1);
       p.textContent = text3;
+
+      task.task = text2;
       p.className = "nombre";
       li.appendChild(p);
       li.appendChild(borrar());
       li.appendChild(Check());
       li.className = "registro-linea";
-      li.id = "state";
+      // li.id = "state";
+      li.id = respuesta.id;
       ol.appendChild(li);
 
       input.value = "";
@@ -89,10 +102,11 @@ function borrar() {
     //con current target el vento siempre venia del boton.
     let item = e.currentTarget.parentElement;
     let diff = item.id;
-    
-    delete({item}); //nuevo objeto//
 
     item.remove();
+
+    borrarTarea(item.id); //api//
+
     if (diff == "check") {
       contador.textContent--;
 

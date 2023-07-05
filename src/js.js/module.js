@@ -1,4 +1,4 @@
-import { post, borrarTarea, getById, get } from "./api.js";
+import { post, borrarTarea, getById, get, put } from "./api.js";
 
 let input = document.getElementById("tareaaña");
 let ol = document.querySelector(".listat");
@@ -13,7 +13,7 @@ let listaElementos2 = JSON.parse(listaGuardada);
 
 var task = {
   task: "",
-  checked: false,
+  checked: false, //nuevo
 };
 
 // if (listaElementos2 && listaElementos2.length > 0) {
@@ -22,9 +22,32 @@ var task = {
 //     const p = document.createElement("p");
 //     p.textContent = elemento.parrafo;
 //     p.className = "nombre";
-//     list.appendChild(p);
-//     list.appendChild(borrar());
-//     list.appendChild(Check());
+function crearTareas(id, text2) {
+  const li = document.createElement("li");
+
+  const p = document.createElement("p");
+  let text3 = text2.charAt(0).toUpperCase() + text2.slice(1);
+  p.textContent = text3;
+
+  task.task = text2;
+  p.className = "nombre";
+  li.appendChild(p);
+  li.appendChild(borrar());
+  li.appendChild(Check());
+  li.className = "registro-linea";
+  // li.id = "state";
+  li.id = id;
+  ol.appendChild(li);
+}
+
+async function cargartareas() {
+  let tareas = await get();
+  tareas.forEach((tarea) => {
+    crearTareas(tarea.id, tarea.task);
+  });
+}
+document.addEventListener("DOMContentLoaded", cargartareas);
+
 //     list.className = "registro-linea";
 //     list.id = "check";
 //     list.style = "background-color: rgb(136, 145, 201);";
@@ -43,11 +66,15 @@ if (listaElementos2 && listaElementos2.length) {
 let ListaAgregar = async (e) => {
   e.preventDefault();
   let text2 = input.value.toLowerCase();
+
+  let task = { task: text2 };
+
   let respuesta = await post(task); //objeto//
-  let taskId = await get(respuesta);
+
   console.log(respuesta);
 
-  //post guardar el resultado en respuesta, await hasta que termine de hacer el post.
+  crearTareas(respuesta.id, respuesta.task);
+
   let text3 = text2.charAt(0).toUpperCase() + text2.slice(1);
   let repite = false;
   let elementos = document.querySelectorAll("li"); //nos devuelve una lista de elemento que cumplen con la condiccion, todos los elementos que sean li.
@@ -63,24 +90,6 @@ let ListaAgregar = async (e) => {
     alert("Ingrese un tarea no repetida");
   } else {
     if (text2 !== "") {
-      const li = document.createElement("li");
-
-      li.id = respuesta.id; //nuevo//
-
-      const p = document.createElement("p");
-      let text3 = text2.charAt(0).toUpperCase() + text2.slice(1);
-      p.textContent = text3;
-
-      task.task = text2;
-      p.className = "nombre";
-      li.appendChild(p);
-      li.appendChild(borrar());
-      li.appendChild(Check());
-      li.className = "registro-linea";
-      // li.id = "state";
-      li.id = respuesta.id;
-      ol.appendChild(li);
-
       input.value = "";
       vacio.style.display = "none";
     } else {
@@ -102,10 +111,9 @@ function borrar() {
     //con current target el vento siempre venia del boton.
     let item = e.currentTarget.parentElement;
     let diff = item.id;
-
-    item.remove();
-
     borrarTarea(item.id); //api//
+    console.log({ item });
+    item.remove();
 
     if (diff == "check") {
       contador.textContent--;
@@ -149,6 +157,8 @@ function Check() {
       contador.textContent--;
       item.style = "background-color: #f5f5f5";
 
+      put(item.textContent); //  el put
+
       let datos = {
         contador: contador.textContent,
       };
@@ -190,4 +200,5 @@ function Check() {
   });
   return confirmartext;
 }
+
 export { ListaAgregar };

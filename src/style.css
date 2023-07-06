@@ -5,6 +5,8 @@ body {
   }
   
   .container {
+    width: 150vmin;
+    
     display: flex;
     justify-content: center;
     align-items: center;
@@ -65,7 +67,7 @@ body {
     border-radius: 4px;
     cursor: pointer;
     margin-left: 0px;
-    margin right: 5px;
+    margin-right: 5px;
     margin-top: 7px;
     padding-left: 57px;
     padding-right: 51px;

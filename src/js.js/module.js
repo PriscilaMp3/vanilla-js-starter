@@ -1,20 +1,14 @@
-import { post, borrarTarea, getById, get, put } from "./api.js";
+import { post, borrarTarea, getById, get, updateTask } from "./api.js";
 
 let input = document.getElementById("tareaaña");
 let ol = document.querySelector(".listat");
 let vacio = document.querySelector(".fondot");
 let contador = document.getElementById("contador");
 let listaElementos = [];
-let datosGuardados = localStorage.getItem("datosGuardados");
-let datos = JSON.parse(datosGuardados);
-
-let listaGuardada = localStorage.getItem("listaGuardada");
-let listaElementos2 = JSON.parse(listaGuardada);
-
-var task = {
-  task: "",
-  checked: false, //nuevo
-};
+// let datosGuardados = localStorage.getItem("datosGuardados");
+// let datos = JSON.parse(datosGuardados);
+// let listaGuardada = localStorage.getItem("listaGuardada");
+// let listaElementos2 = JSON.parse(listaGuardada);
 
 // if (listaElementos2 && listaElementos2.length > 0) {
 //   listaElementos2.forEach(function (elemento) {
@@ -22,20 +16,19 @@ var task = {
 //     const p = document.createElement("p");
 //     p.textContent = elemento.parrafo;
 //     p.className = "nombre";
-function crearTareas(id, text2) {
+function crearTareas(id, text) {
   const li = document.createElement("li");
 
   const p = document.createElement("p");
-  let text3 = text2.charAt(0).toUpperCase() + text2.slice(1);
+  let text3 = text.charAt(0).toUpperCase() + text.slice(1);
   p.textContent = text3;
 
-  task.task = text2;
   p.className = "nombre";
   li.appendChild(p);
   li.appendChild(borrar());
   li.appendChild(Check());
   li.className = "registro-linea";
-  // li.id = "state";
+
   li.id = id;
   ol.appendChild(li);
 }
@@ -46,7 +39,6 @@ async function cargartareas() {
     crearTareas(tarea.id, tarea.task);
   });
 }
-document.addEventListener("DOMContentLoaded", cargartareas);
 
 //     list.className = "registro-linea";
 //     list.id = "check";
@@ -58,20 +50,18 @@ document.addEventListener("DOMContentLoaded", cargartareas);
 //   listaElementos2 = [];
 // }
 
-if (listaElementos2 && listaElementos2.length) {
-  contador.textContent = datos.contador;
-} else {
-  console.log("La lista está vacía.");
-}
+// if (listaElementos2 && listaElementos2.length) {
+//   contador.textContent = datos.contador;
+// } else {
+//   console.log("La lista está vacía.");
+// }
 let ListaAgregar = async (e) => {
   e.preventDefault();
   let text2 = input.value.toLowerCase();
 
-  let task = { task: text2 };
+  let task = { task: text2, check: false };
 
   let respuesta = await post(task); //objeto//
-
-  console.log(respuesta);
 
   crearTareas(respuesta.id, respuesta.task);
 
@@ -87,7 +77,7 @@ let ListaAgregar = async (e) => {
     }
   }
   if (repite) {
-    alert("Ingrese un tarea no repetida");
+    // alert("Ingrese un tarea no repetida");
   } else {
     if (text2 !== "") {
       input.value = "";
@@ -112,7 +102,7 @@ function borrar() {
     let item = e.currentTarget.parentElement;
     let diff = item.id;
     borrarTarea(item.id); //api//
-    console.log({ item });
+
     item.remove();
 
     if (diff == "check") {
@@ -121,16 +111,16 @@ function borrar() {
       let datos = {
         contador: contador.textContent,
       };
-      let datosJSON = JSON.stringify(datos);
-      localStorage.setItem("datosGuardados", datosJSON);
+      // let datosJSON = JSON.stringify(datos);
+      // localStorage.setItem("datosGuardados", datosJSON);
 
       let Parr = item.textContent;
       listaElementos = listaElementos2;
       let index = listaElementos.find((elemento) => elemento.parrafo === Parr);
       if (index !== -1) {
         listaElementos.splice(index, 1);
-        let listaJSON = JSON.stringify(listaElementos);
-        localStorage.setItem("listaGuardada", listaJSON);
+        // let listaJSON = JSON.stringify(listaElementos);
+        // localStorage.setItem("listaGuardada", listaJSON);
       }
     } else {
     }
@@ -149,56 +139,60 @@ function Check() {
   confirmartext.className = "asd";
   confirmartext.appendChild(iconocheck);
 
-  confirmartext.addEventListener("click", (e) => {
+  confirmartext.addEventListener("click", async (e) => {
+    //funcion async //
     let item = e.currentTarget.parentElement;
-    let diff = item.id;
+    let diff = item["data-check"];
     if (diff == "check") {
-      item.id = "State";
+      item["data-check"] = "State";
       contador.textContent--;
       item.style = "background-color: #f5f5f5";
 
-      put(item.textContent); //  el put
+      // {"tarea":"barrer","id":"df37ab34-c1b9-413e-b249-fb7ca978a6fd", "check":true}
 
-      let datos = {
-        contador: contador.textContent,
-      };
-      let datosJSON = JSON.stringify(datos);
-      localStorage.setItem("datosGuardados", datosJSON);
+      await updateTask(item.id, { check: false }); //  await..//
 
-      let Parr = item.textContent;
-      listaElementos = listaElementos2;
-      let index = listaElementos.find((elemento) => elemento.parrafo === Parr);
-      if (index !== -1) {
-        listaElementos.splice(index, 1);
-        let listaJSON = JSON.stringify(listaElementos);
-        localStorage.setItem("listaGuardada", listaJSON);
-      }
+      // let datos = {
+      //   contador: contador.textContent,
+      // };
+      // let datosJSON = JSON.stringify(datos);
+      // localStorage.setItem("datosGuardados", datosJSON);
+
+      // let Parr = item.textContent;
+      // listaElementos = listaElementos2;
+      // let index = listaElementos.find((elemento) => elemento.parrafo === Parr);
+      // if (index !== -1) {
+      //   listaElementos.splice(index, 1);
+      // let listaJSON = JSON.stringify(listaElementos);
+      // localStorage.setItem("listaGuardada", listaJSON);
+      // }
     } else {
-      item.id = "check";
+      item["data-check"] = "check";
       contador.textContent++;
       item.style = "background-color: rgb(136, 145, 201);";
+      await updateTask(item.id, { check: true });
 
-      let datos = {
-        contador: contador.textContent,
-      };
+      // // let datos = {
+      //   contador: contador.textContent,
+      // };
 
-      let datosJSON = JSON.stringify(datos);
-      localStorage.setItem("datosGuardados", datosJSON);
+      // let datosJSON = JSON.stringify(datos);
+      // localStorage.setItem("datosGuardados", datosJSON);
 
-      let Parr = item.textContent;
-      let elemento = {
-        parrafo: Parr,
-        cont: 1,
-      };
-      listaElementos = listaElementos2;
-      listaElementos.push(elemento);
+      // let Parr = item.textContent;
+      // let elemento = {
+      //   parrafo: Parr,
+      //   cont: 1,
+      // };
+      // listaElementos = listaElementos2;
+      // listaElementos.push(elemento);
 
-      let listaJSON = JSON.stringify(listaElementos);
-      localStorage.setItem("listaGuardada", listaJSON);
-      console.log(listaElementos);
+      // let listaJSON = JSON.stringify(listaElementos);
+      // localStorage.setItem("listaGuardada", listaJSON);
+      // console.log(listaElementos);
     }
   });
   return confirmartext;
 }
 
-export { ListaAgregar };
+export { ListaAgregar, cargartareas };

@@ -7,8 +7,8 @@ async function get() {
     },
     body: JSON.stringify(),
   });
-  const postTask = await response.json();
-  return postTask;
+  const tasks = await response.json();
+  return tasks;
 }
 
 async function getById(id) {
@@ -34,6 +34,7 @@ async function post(task) {
     body: JSON.stringify(task),
   });
   const postTask = await response.json();
+
   return postTask;
 }
 
@@ -50,20 +51,21 @@ async function borrarTarea(id) {
   return postTask;
 }
 
-async function put(id) {    //nuevafuncion para metodo put//
-  const response = await fetch("http://localhost:3000/api/task/ " + id, {
-    method: " PUT",
+async function updateTask(id, task) {
+  //nuevafuncion para metodo put//
+  const response = await fetch("http://localhost:3000/api/task/" + id, {
+    method: "PUT",
     headers: {
       Accept: "application/json",
-      "Content-Type": "application/json",      
+      "Content-Type": "application/json",
     },
-    
+    body: JSON.stringify(task),
   });
   const postTask = await response.json();
   return postTask;
 }
 
-export { post, borrarTarea, get, getById, put};
+export { post, borrarTarea, get, getById, updateTask };
 
 // si las tareas estan en el li.id se podria el id para borrar.
 // tomar respuesta 2

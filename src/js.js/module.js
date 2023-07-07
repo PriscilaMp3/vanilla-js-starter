@@ -5,33 +5,6 @@ let ol = document.querySelector(".listat");
 let vacio = document.querySelector(".fondot");
 let contador = document.getElementById("contador");
 let listaElementos = [];
-// let datosGuardados = localStorage.getItem("datosGuardados");
-// let datos = JSON.parse(datosGuardados);
-// let listaGuardada = localStorage.getItem("listaGuardada");
-// let listaElementos2 = JSON.parse(listaGuardada);
-
-// if (listaElementos2 && listaElementos2.length > 0) {
-//   listaElementos2.forEach(function (elemento) {
-//     let list = document.createElement("li");
-//     const p = document.createElement("p");
-//     p.textContent = elemento.parrafo;
-//     p.className = "nombre";
-function crearTareas(id, text) {
-  const li = document.createElement("li");
-
-  const p = document.createElement("p");
-  let text3 = text.charAt(0).toUpperCase() + text.slice(1);
-  p.textContent = text3;
-
-  p.className = "nombre";
-  li.appendChild(p);
-  li.appendChild(borrar());
-  li.appendChild(Check());
-  li.className = "registro-linea";
-
-  li.id = id;
-  ol.appendChild(li);
-}
 
 async function cargartareas() {
   let tareas = await get();
@@ -40,46 +13,42 @@ async function cargartareas() {
   });
 }
 
-//     list.className = "registro-linea";
-//     list.id = "check";
-//     list.style = "background-color: rgb(136, 145, 201);";
-//     ol.appendChild(list);
-//   });
-// } else {
-//   console.log("La lista está vacía.");
-//   listaElementos2 = [];
-// }
+function crearTareas(id, text) {
+  const li = document.createElement("li");
+  const p = document.createElement("p");
+  let text3 = text.charAt(0).toUpperCase() + text.slice(1);
+  p.textContent = text3;
+  p.className = "nombre";
+  li.appendChild(p);
+  li.appendChild(borrar());
+  li.appendChild(Check());
+  li.className = "registro-linea";
+  li.id = id;
+  ol.appendChild(li);
+}
 
-// if (listaElementos2 && listaElementos2.length) {
-//   contador.textContent = datos.contador;
-// } else {
-//   console.log("La lista está vacía.");
-// }
 let ListaAgregar = async (e) => {
   e.preventDefault();
-  let text2 = input.value.toLowerCase();
-
+  let text2 = input.value.toLowerCase().trim();
   let task = { task: text2, check: false };
-
-  let respuesta = await post(task); //objeto//
-
-  crearTareas(respuesta.id, respuesta.task);
-
+  //objeto//
+  // crearTareas(respuesta.id, respuesta.task);
   let text3 = text2.charAt(0).toUpperCase() + text2.slice(1);
   let repite = false;
   let elementos = document.querySelectorAll("li"); //nos devuelve una lista de elemento que cumplen con la condiccion, todos los elementos que sean li.
   for (let i = 0; i < elementos.length; i++) {
     let tarea = elementos[i].querySelector("p");
-
     if (tarea.textContent === text3) {
       repite = true;
       break;
     }
   }
   if (repite) {
-    // alert("Ingrese un tarea no repetida");
+    alert("Ingrese un tarea no repetida");
   } else {
     if (text2 !== "") {
+      let respuesta = await post(task);
+      crearTareas(respuesta.id, respuesta.task);
       input.value = "";
       vacio.style.display = "none";
     } else {
@@ -96,33 +65,13 @@ function borrar() {
   borrartext.appendChild(icono);
 
   borrartext.addEventListener("click", function (e) {
-    //cuando se usa taregt el padre en este caso era el boton, porque el evento venia del icono,
-    //y a veces el padre era el li porque el evento venia del boton.
-    //con current target el vento siempre venia del boton.
     let item = e.currentTarget.parentElement;
     let diff = item.id;
     borrarTarea(item.id); //api//
-
     item.remove();
 
     if (diff == "check") {
       contador.textContent--;
-
-      let datos = {
-        contador: contador.textContent,
-      };
-      // let datosJSON = JSON.stringify(datos);
-      // localStorage.setItem("datosGuardados", datosJSON);
-
-      let Parr = item.textContent;
-      listaElementos = listaElementos2;
-      let index = listaElementos.find((elemento) => elemento.parrafo === Parr);
-      if (index !== -1) {
-        listaElementos.splice(index, 1);
-        // let listaJSON = JSON.stringify(listaElementos);
-        // localStorage.setItem("listaGuardada", listaJSON);
-      }
-    } else {
     }
     let items = document.querySelectorAll("li");
     if (items.length === 0) {
@@ -140,56 +89,18 @@ function Check() {
   confirmartext.appendChild(iconocheck);
 
   confirmartext.addEventListener("click", async (e) => {
-    //funcion async //
     let item = e.currentTarget.parentElement;
     let diff = item["data-check"];
     if (diff == "check") {
       item["data-check"] = "State";
       contador.textContent--;
       item.style = "background-color: #f5f5f5";
-
-      // {"tarea":"barrer","id":"df37ab34-c1b9-413e-b249-fb7ca978a6fd", "check":true}
-
-      await updateTask(item.id, { check: false }); //  await..//
-
-      // let datos = {
-      //   contador: contador.textContent,
-      // };
-      // let datosJSON = JSON.stringify(datos);
-      // localStorage.setItem("datosGuardados", datosJSON);
-
-      // let Parr = item.textContent;
-      // listaElementos = listaElementos2;
-      // let index = listaElementos.find((elemento) => elemento.parrafo === Parr);
-      // if (index !== -1) {
-      //   listaElementos.splice(index, 1);
-      // let listaJSON = JSON.stringify(listaElementos);
-      // localStorage.setItem("listaGuardada", listaJSON);
-      // }
+      await updateTask(item.id, { check: false });
     } else {
       item["data-check"] = "check";
       contador.textContent++;
       item.style = "background-color: rgb(136, 145, 201);";
       await updateTask(item.id, { check: true });
-
-      // // let datos = {
-      //   contador: contador.textContent,
-      // };
-
-      // let datosJSON = JSON.stringify(datos);
-      // localStorage.setItem("datosGuardados", datosJSON);
-
-      // let Parr = item.textContent;
-      // let elemento = {
-      //   parrafo: Parr,
-      //   cont: 1,
-      // };
-      // listaElementos = listaElementos2;
-      // listaElementos.push(elemento);
-
-      // let listaJSON = JSON.stringify(listaElementos);
-      // localStorage.setItem("listaGuardada", listaJSON);
-      // console.log(listaElementos);
     }
   });
   return confirmartext;

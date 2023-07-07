@@ -31,7 +31,7 @@ background: linear-gradient(to right, #D6A4A4, #DAE2F8); */
   width: 100%;
   max-width: 800px;
   margin: 0 auto;
-  padding: 20px;
+  padding: 0;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -161,17 +161,23 @@ button {
 
 @media (max-width: 600px) {
   .container {
-    padding: 10px;
+    width: 100%;
+    padding: 5px;
   }
 
   .folder-container {
-    width: 100px;
-    max-width: 100%;
+    width: 100%;
+    margin-right: 15px;
+    margin-bottom: 15px;
   }
 
-  .registro-linea2 .circle2,
+  .registro-linea2,
   .text2,
   .textfondo {
     margin-left: 0;
+  }
+
+  .circle2 {
+    margin: 0 auto !important;
   }
 }

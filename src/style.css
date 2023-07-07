@@ -1,13 +1,30 @@
 body {
-/* background: #DAE2F8;  
+  /* background: #DAE2F8;  
 background: -webkit-linear-gradient(to right, #D6A4A4, #DAE2F8);  
 background: linear-gradient(to right, #D6A4A4, #DAE2F8); */
-background: #757F9A;  /* fallback for old browsers */
-background: -webkit-linear-gradient(to right, #D7DDE8, #757F9A);  /* Chrome 10-25, Safari 5.1-6 */
-background: linear-gradient(to right, #D7DDE8, #757F9A); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+  background: #757f9a; /* fallback for old browsers */
+  background: -webkit-linear-gradient(
+    to right,
+    #d7dde8,
+    #757f9a
+  ); /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(
+    to right,
+    #d7dde8,
+    #757f9a
+  ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 
-  margin: 0; 
+  margin: 0;
   padding: 0;
+}
+
+@font-face {
+  font-family: "mifuente";
+  src: url("Nostalgia.otf");
+}
+@font-face {
+  font-family: "mifuente2";
+  src: url("Heroik\ -\ Personal\ Use.otf");
 }
 
 .container {
@@ -19,7 +36,6 @@ background: linear-gradient(to right, #D7DDE8, #757F9A); /* W3C, IE 10+/ Edge, F
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-  
 }
 
 .folder-container {
@@ -46,8 +62,8 @@ background: linear-gradient(to right, #D7DDE8, #757F9A); /* W3C, IE 10+/ Edge, F
 }
 
 h1 {
-  font-size: 24px;
-  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+  font-size: 45px;
+  font-family: "mifuente";
 }
 
 .content-box {
@@ -119,7 +135,7 @@ button {
   width: 100px;
   height: 100px;
   border-radius: 50%;
-  background-color: #e8e8e8;
+  background-color: #abdcd1;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -132,23 +148,24 @@ button {
   line-height: 20px;
   margin-left: -100px;
   margin-left: 75%;
-  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+  font-family: "mifuente";
+  font-weight: bold;
 }
 
 .textfondo {
   margin-top: 34%;
   margin-left: 40%;
-  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+  font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
+    "Lucida Sans", Arial, sans-serif;
 }
 
-
-@media only screen and ( max-width: 767px) {
+@media (max-width: 600px) {
   .container {
     padding: 10px;
   }
 
   .folder-container {
-    width: 100%;
+    width: 100px;
     max-width: 100%;
   }
 

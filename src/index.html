@@ -1,60 +1,57 @@
 <!DOCTYPE html>
 <html>
-	<meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	
-    <title>App Lista de Tareas</title>
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta2/css/all.min.css"
-      integrity="sha512-YWzhKL2whUzgiheMoBFwW8CKV4qpHQAEuvilg9FAn5VJUDwKZZxkJNuGM4XkWuk94WCrrwslk8yWNGmY1EduTA=="
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>App Lista de Tareas</title>
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta2/css/all.min.css"
+    integrity="sha512-YWzhKL2whUzgiheMoBFwW8CKV4qpHQAEuvilg9FAn5VJUDwKZZxkJNuGM4XkWuk94WCrrwslk8yWNGmY1EduTA=="
+    crossorigin="anonymous"
+    referrerpolicy="no-referrer"
+  />
+  <link rel="stylesheet" href="./style.css" />
+  <head>
+    <title>Proyecto Lista de Tareas</title>
+    <meta charset="UTF-8" />
+  </head>
+  <body>
+    <div class="container">
+      <div class="folder-container">
+        <h1 id="fuente">Lista de Tareas</h1>
+        <form id="form-crear" class="formulario">
+          <div class="input-section">
+            <input id="tareaaña" type="text" placeholder="Agregar tarea..." />
+            <br />
+            <button class="btagregar">
+              Agregar <i class="fas fa-plus"></i>
+            </button>
+            <div class="containercontador">
+              <div class="text2">Tareas realizadas</div>
+              <div class="circle2">
+                <span id="contador">0</span>
+              </div>
+            </div>
+          </div>
+        </form>
+        <div class="content-box">
+          <ol class="listat"></ol>
+          <div class="fondot">
+            <p class="textfondo">No tienes tareas pendientes.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="./js.js/index.js" type="module"></script>
+    <script src="./js.js/module.js" type="module"></script>
+    <script src="./js.js/api.js" type="module"></script>
+
+    <script
+      src="https://kit.fontawesome.com/664cda249f.js"
       crossorigin="anonymous"
-      referrerpolicy="no-referrer"/>
-    <link rel="stylesheet" href="./style.css" />
-<head>
-	<title>Proyecto Lista de Tareas</title>
-	<meta charset="UTF-8" />
-</head>
-<body>
-	<div class="container">
-		<div class="folder-container">
-		  <h1>Lista de Tareas</h1>
-		  <form id="form-crear" class="formulario">
-			<div class="input-section">
-			  <input id="tareaaña" type="text" placeholder="Agregar tarea..." />
-			  <br />
-			  <button class="btagregar">
-				Agregar <i class="fas fa-plus"></i>
-			  </button>
-			  <div class="containercontador">
-				<div class="text2"> Tareas realizadas</div>
-				<div class="circle2">
-				  <span id="contador">0</span>
-				</div>
-			  </div>
-			</div>
-		  </form>
-		  <div class="content-box">
-			<ol class="listat"></ol>
-			<div class="fondot">
-			  <p class="textfondo">
-				No tienes tareas pendientes.
-			  </p>
-			</div>
-		  </div>
-		</div>
-	  </div>
-	<script src="./js.js/index.js" type="module"></script>
-	<script src="./js.js/module.js" type="module"></script>
-	<script src="./js.js/api.js" type="module"></script>
-
-<script
-	src="https://kit.fontawesome.com/664cda249f.js"
-	crossorigin="anonymous"
-  ></script>
-  
-
-</body>
-
+    ></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  </body>
 </html>

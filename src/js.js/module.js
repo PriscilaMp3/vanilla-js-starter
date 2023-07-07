@@ -52,7 +52,7 @@ let ListaAgregar = async (e) => {
       input.value = "";
       vacio.style.display = "none";
     } else {
-      alert("Ingrese un texto");
+    alert("Ingrese un texto");
     }
   }
 };
